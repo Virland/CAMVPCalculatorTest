@@ -265,6 +265,7 @@ __pycache__/
 Logs/
 Temp/
 Library/
+UserSettings/
 ExportedObj/
 obj/
 *.svd
