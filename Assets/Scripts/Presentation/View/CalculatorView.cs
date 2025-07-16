@@ -1,3 +1,4 @@
+using TMPro;
 using Presenter;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,8 +7,11 @@ namespace View
 {
     public class CalculatorView : MonoBehaviour, ICalculatorView
     {
-        [SerializeField] private InputField m_ExpressionInput;
-        [SerializeField] private Button m_CalculateButton;
+        [SerializeField]
+        private TMP_InputField m_ExpressionInput;
+        [SerializeField]
+        private Button m_CalculateButton;
+
         private ICalculatorPresenter m_Presenter;
 
         private void Construct(ICalculatorPresenter presenter)
