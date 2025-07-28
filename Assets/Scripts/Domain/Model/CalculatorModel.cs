@@ -1,5 +1,5 @@
 using System;
-using Domain.Entity;
+using System.Globalization;
 
 namespace Domain.UseCase
 {
@@ -16,8 +16,8 @@ namespace Domain.UseCase
 
             if (nums.Length == 2)
             {
-                decimal n1 = decimal.Parse(nums[0]);
-                decimal n2 = decimal.Parse(nums[1]);
+                decimal n1 = decimal.Parse(nums[0], CultureInfo.InvariantCulture);
+                decimal n2 = decimal.Parse(nums[1], CultureInfo.InvariantCulture);
 
                 result = (n1 + n2);
             }

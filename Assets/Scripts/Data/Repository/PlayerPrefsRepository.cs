@@ -20,6 +20,7 @@ namespace Repository
         public void Write(T value)
         {
             PlayerPrefs.SetString(_key, JsonUtility.ToJson(value));
+            PlayerPrefs.Save();
         }
     }
 }

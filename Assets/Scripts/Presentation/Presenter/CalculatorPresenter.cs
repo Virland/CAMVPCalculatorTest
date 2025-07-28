@@ -23,12 +23,12 @@ namespace Presenter
             _calculatorView.ResultRequested += OnResultRequested;
 
             _calculatorState = _stateRepository.Read();
-            _calculatorView.Display(_calculatorState.displayText);
+            _calculatorView.Display(_calculatorState.DisplayText);
         }
 
         public void OnExpressionChanged(string expression)
         {
-            _calculatorState.displayText = expression;
+            _calculatorState.DisplayText = expression;
             SaveState();
         }
 
@@ -36,14 +36,14 @@ namespace Presenter
         {
             try
             {
-                _calculatorState.displayText = _calculatorModel.Calculate(_calculatorState.displayText).ToString();
+                _calculatorState.DisplayText = _calculatorModel.Calculate(_calculatorState.DisplayText).ToString();
             }
             catch (Exception)
             {
-                _calculatorState.displayText = "Error";
+                _calculatorState.DisplayText = "Error";
             }
 
-            _calculatorView.Display(_calculatorState.displayText);
+            _calculatorView.Display(_calculatorState.DisplayText);
 
             SaveState();
         }

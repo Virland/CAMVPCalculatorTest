@@ -1,6 +1,3 @@
-using Domain.UseCase;
-using Presenter;
-using Repository;
 using System;
 using TMPro;
 using UnityEngine;
@@ -31,12 +28,12 @@ namespace View
 
         private void OnResultButtonClicked()
         {
-            ResultRequested.Invoke();
+            ResultRequested?.Invoke();
         }
 
         private void OnExpressionChanged(string expression)
         {
-            ExpressionChanged.Invoke(expression);
+            ExpressionChanged?.Invoke(expression);
         }
     }
 }

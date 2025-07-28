@@ -2,6 +2,6 @@ namespace Domain.Entity
 {
     public class CalculatorState
     {
-        public string displayText;
+        public string DisplayText;
     }
 }
