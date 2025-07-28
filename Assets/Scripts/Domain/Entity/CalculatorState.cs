@@ -1,6 +1,6 @@
 namespace Domain.Entity
 {
-    public struct CalculatorState
+    public class CalculatorState
     {
         public string displayText;
     }

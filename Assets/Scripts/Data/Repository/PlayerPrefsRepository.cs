@@ -5,25 +5,21 @@ namespace Repository
 {
     public class PlayerPrefsRepository<T> : IRepository<T>
     {
-        private string m_Key;
+        private readonly string _key;
 
         public PlayerPrefsRepository(string key)
         {
-            m_Key = key;
+            _key = key;
         }
 
         public T Read()
         {
-            if (PlayerPrefs.HasKey(m_Key))
-            {
-
-            }
-            return JsonUtility.FromJson<T>(PlayerPrefs.GetString(m_Key, "{}"));
+            return JsonUtility.FromJson<T>(PlayerPrefs.GetString(_key, "{}"));
         }
 
         public void Write(T value)
         {
-            PlayerPrefs.SetString(m_Key, JsonUtility.ToJson(value));
+            PlayerPrefs.SetString(_key, JsonUtility.ToJson(value));
         }
     }
 }

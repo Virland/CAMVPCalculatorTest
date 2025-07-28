@@ -1,5 +1,8 @@
-using TMPro;
+using Domain.UseCase;
 using Presenter;
+using Repository;
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,42 +11,32 @@ namespace View
     public class CalculatorView : MonoBehaviour, ICalculatorView
     {
         [SerializeField]
-        private TMP_InputField m_ExpressionInput;
+        private TMP_InputField _expressionInput;
         [SerializeField]
-        private Button m_CalculateButton;
+        private Button _calculateButton;
 
-        private ICalculatorPresenter m_Presenter;
-
-        private void Construct(ICalculatorPresenter presenter)
-        {
-            m_Presenter = presenter;
-        }
+        public event Action<string> ExpressionChanged;
+        public event Action ResultRequested;
 
         private void Awake()
         {
-            // inject
-            Construct(new CalculatorPresenter(this, null));
-        }
-
-        private void Start()
-        {
-            m_CalculateButton.onClick.AddListener(ResultButtonClickHandler);
-            m_Presenter.OnStart();
+            _calculateButton.onClick.AddListener(OnResultButtonClicked);
+            _expressionInput.onValueChanged.AddListener(OnExpressionChanged);
         }
 
         public void Display(string value)
         {
-            m_ExpressionInput.SetTextWithoutNotify(value);
+            _expressionInput.SetTextWithoutNotify(value);
         }
 
-        private void ResultButtonClickHandler()
+        private void OnResultButtonClicked()
         {
-            m_Presenter.OnResultRequested(m_ExpressionInput.text);
+            ResultRequested.Invoke();
         }
 
-        private void OnApplicationQuit()
+        private void OnExpressionChanged(string expression)
         {
-            m_Presenter.OnQuit(m_ExpressionInput.text);
+            ExpressionChanged.Invoke(expression);
         }
     }
 }

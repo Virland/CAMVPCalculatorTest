@@ -1,4 +1,4 @@
-﻿namespace Domain.UseCase
+﻿namespace Repository
 {
     public interface IRepository<T>
     {

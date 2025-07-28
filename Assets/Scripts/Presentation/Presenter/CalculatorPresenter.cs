@@ -1,41 +1,56 @@
 using Domain.Entity;
 using Domain.UseCase;
-using View;
 using Repository;
+using System;
+using View;
 
 namespace Presenter
 {
-    public class CalculatorPresenter : ICalculatorPresenter, ICalculatorStateChangedHandler
+    public class CalculatorPresenter : ICalculatorPresenter
     {
-        private ICalculatorModel m_CalculatorModel;
-        private ICalculatorView m_CalculatorView;
+        private readonly ICalculatorModel _calculatorModel;
+        private readonly ICalculatorView _calculatorView;
+        private readonly IRepository<CalculatorState> _stateRepository;
+        private readonly CalculatorState _calculatorState;
 
-        public CalculatorPresenter(ICalculatorView view, ICalculatorModel model)
+        public CalculatorPresenter(ICalculatorView view, ICalculatorModel model, IRepository<CalculatorState> stateRepository)
         {
-            m_CalculatorView = view;
-            m_CalculatorModel = model ?? new CalculatorModel(new PlayerPrefsRepository<CalculatorState>("CalculatorState"), this);
+            _calculatorView = view;
+            _calculatorModel = model;
+            _stateRepository = stateRepository;
+
+            _calculatorView.ExpressionChanged += OnExpressionChanged;
+            _calculatorView.ResultRequested += OnResultRequested;
+
+            _calculatorState = _stateRepository.Read();
+            _calculatorView.Display(_calculatorState.displayText);
         }
 
-        public void Haldle(CalculatorState result)
+        public void OnExpressionChanged(string expression)
         {
-            m_CalculatorView.Display(result.displayText);
+            _calculatorState.displayText = expression;
+            SaveState();
         }
 
-        public void OnStart()
+        public void OnResultRequested()
         {
-            m_CalculatorModel.Load();
+            try
+            {
+                _calculatorState.displayText = _calculatorModel.Calculate(_calculatorState.displayText).ToString();
+            }
+            catch (Exception)
+            {
+                _calculatorState.displayText = "Error";
+            }
+
+            _calculatorView.Display(_calculatorState.displayText);
+
+            SaveState();
         }
 
-        public void OnQuit(string expression)
+        private void SaveState()
         {
-            m_CalculatorModel.SetExpression(expression);
-            m_CalculatorModel.Save();
-        }
-
-        public void OnResultRequested(string expression)
-        {
-            m_CalculatorModel.SetExpression(expression);
-            m_CalculatorModel.Calculate();
+            _stateRepository.Write(_calculatorState);
         }
     }
 }
